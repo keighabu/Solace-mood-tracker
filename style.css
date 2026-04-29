@@ -1,0 +1,1819 @@
+/* =========================================
+   1. LANDING PAGE & GLOBAL STYLES
+   ========================================= */
+/* At the very top of your CSS file, paste this to import a nice font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+
+.tagline {
+    color: #6b401b;
+    font-family: 'Merge One', sans-serif; /* The new font style */
+    font-size: 1.1rem;      /* Adjust size */
+    letter-spacing: 3px;    /* Adds space between letters for a 'Zen' look */
+    color: #555;            /* Soft charcoal color */
+    text-align: center;
+    margin-top: 10px;       /* Space below the logo */
+    font-weight: 300;       /* Makes the font look thin and elegant */
+}
+/* Removes default browser spacing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    
+    /* The Background Gradient */
+    background: linear-gradient(180deg, #AEE7FF 0%, #E8F9EE 100%);
+    background-attachment: fixed;
+
+    /* Centering Logic */
+    display: flex;
+    flex-direction: column; /* Allows items to stack vertically */
+    align-items: center;    /* Centers horizontally */
+    justify-content: flex-start; /* Pushes content to the TOP */
+    
+  /* Adjust this to control exactly how far from the very top you start */
+    padding-top: 20px; 
+    margin: 0;
+}
+
+/* Logo Styling */
+.logo {
+    width: 280px; /* Increased from 180px to make it bigger */
+    height: auto; /* Keeps the proportions correct so it doesn't look stretched */
+    
+    /* Optional: This helps keep the image crisp as it scales */
+    image-rendering: auto; 
+}
+/* The Glassmorphism Card */
+.glass-card {
+    width: 90%;
+    max-width: 400px; /* Limits the width on laptops/desktops */
+    margin-top: 30px; /* Space between the logo and the card */
+    padding: 40px;
+    
+    /* The Glass Effect */
+    background: rgba(255, 255, 255, 0.45); /* Semi-transparent white */
+    backdrop-filter: blur(15px); /* This creates the "frosted" look */
+    -webkit-backdrop-filter: blur(15px); /* Support for Safari */
+    
+    /* Styling the edges */
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    
+    /* Soft shadow to give it depth */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    
+    text-align: center;
+    color: #444; /* Charcoal grey for clear reading */
+}
+
+/* Styling the text inside the card */
+.glass-card h2 {
+    color: #6b401b;
+  font-family: Georgia,sans-serif; font-style: italic; /* If you linked Google Fonts */
+    font-weight: 600; /* Medium thickness */
+    letter-spacing: 1px;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    text-align: center;
+}
+.description {
+    /* Font Style: Clean and airy */
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-weight: 300; /* Makes the font thinner/lighter */
+    font-style: italic; /* Gives it that "gentle" feel */
+    
+    /* Color: A softer version of your brown or a muted grey */
+    color: #8d6e63; 
+    
+    /* Size & Spacing */
+    font-size: 1rem;
+    line-height: 1.6; /* Adds space between lines if it wraps */
+    letter-spacing: 0.5px;
+    
+    margin-top: 10px;
+    text-align: center;
+}
+.question {
+    /* Style: Clean and modern */
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 500;
+    
+    /* Color: A solid charcoal or a deep brown to make it clear */
+    color: #444444; 
+    
+    /* Size: Slightly larger than the description but smaller than the heading */
+    font-size: 1.2rem;
+    
+    /* Spacing: Give it some breathing room from the text above */
+    margin-top: 25px;
+    margin-bottom: 15px;
+    text-align: center;
+    
+    /* Optional: A very subtle fade-in effect */
+    opacity: 0.9;
+}
+
+.glass-card p {
+    font-weight: 300;
+    opacity: 0.8;
+}
+.date-display {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    color: #6b401b; /* Matching your theme color */
+    opacity: 0.7;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+/* Style for the Name Input */
+#user-name-input {
+    background: rgba(255, 255, 255, 0.5); /* Semi-transparent */
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: #556B2F;
+    outline: none;
+    width: 200px;
+    text-align: center;
+    margin-bottom: 10px; /* Spacing between input and button */
+}
+
+/* Style for the Start Journey Button */
+.start-btn {
+    background-color: #778E77; /* Your Sage Green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.start-btn:hover {
+    background-color: #556B2F; /* Darker green on hover */
+}
+
+.arrow {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+/* =========================================
+   2. DASHBOARD PAGE STYLES
+   ========================================= */
+body {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #AEE7FF 0%, #E8F9EE 100%);
+    background-attachment: fixed;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 60px;
+    margin: 0;
+}
+/* Unified Global Body Style */
+body.dashboard-body {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #AEE7FF 0%, #E8F9EE 100%);
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: max(40px, env(safe-area-inset-top) + 20px);
+    margin: 0;
+}
+
+.logo-dashboard {
+    margin-top: 0; /* Remove any negative margin */
+    display: block;
+}
+#welcome-msg {
+    font-family: 'Georgia', serif;
+    color: #4a5a4a;
+    font-weight: bold;
+    font-style: italic;
+    
+    /* Force everything onto one line */
+    display: flex;
+    justify-content: center; /* Keeps it centered */
+    white-space: nowrap;     /* Forbids the text from wrapping to a 2nd line */
+    gap: 8px;                /* Keeps a nice gap between greeting and name */
+
+    /* Adjust size to make sure it doesn't spill out of the glass card */
+    font-size: 1.5rem; 
+    margin: 15px 0;
+}
+
+/* Styling the Date at the top of the card */
+.date-text {
+    font-family: 'Merge One', sans-serif;
+    font-size: 0.8rem;
+    color: #6b401b; /* Matches your brown accent */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block; /* Ensures it takes its own line */
+}
+
+/* Styling for the EXIT button as a White Pill */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2F3E2F;           /* Charcoal Forest text for contrast */
+    background-color: #FFFFFF; /* The White Pill background */
+    
+    /* This creates the 'Pill' shape */
+    padding: 8px 20px;
+    border-radius: 50px;      
+    
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Soft shadow */
+    
+    margin-top: 15px;
+}
+
+/* Hover effect */
+.back-link:hover {
+    background-color: #F8F9F8; /* Very light sage/grey on hover */
+    transform: translateY(-2px); /* Subtle lift */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    color: #4A5D4A;
+}
+
+/* Optional: nudge the arrow slightly on hover */
+.back-link:hover {
+    transform: translateX(-3px);
+}
+.description {
+    font-family: 'Bellefair', serif; /* Matching your font */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    
+    /* The Fixes */
+    width: 90%;           /* Keeps it from touching the very edge */
+    max-width: 600px;     /* Prevents it from getting too wide on desktop */
+    margin: 0 auto;       /* Centers the container */
+    overflow-wrap: break-word; /* Forces long words to break if needed */
+    white-space: normal;  /* Ensures text wraps to the next line */
+}
+
+.greeting-text {
+    font-size: 2rem;
+    text-align: center;
+    margin: 10px 0;
+    padding: 0 15px;      /* Prevents name from hitting edges */
+}
+.dashboard-body .glass-card {
+    width: 95%;          
+    max-width: 1200px;   
+    padding: 40px 20px;
+}
+/* The container for the text and button */
+.affirmation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+/* Update the container to lock into the corner */
+.affirmation-container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;    /* Forces horizontal centering */
+    justify-content: center !important; /* Forces vertical centering */
+    width: 100% !important;            /* Ensures it spans the whole card */
+    text-align: center !important;     /* Fallback for text alignment */
+    margin-bottom: 30px;               /* Space before 'A quick check-in' */
+}
+    
+    /* 1. We're using negative margin to pull it UP past the card padding */
+    margin-top: 20px !important;  
+    margin-left: 5px !important;  /* Slight left alignment */
+    margin-bottom: 10px;
+    
+    padding: 0;               /* Removes container padding for tightness */
+}
+
+/* Update the text: Smaller Font, NO QUICKSAND */
+
+.affirmation-container p {
+    /* Montserrat is a much cleaner, less rounded alternative */
+    font-family: 'Bellefair', serif !important; 
+    color: #556B2F;          /* Your Sage Green */
+    /* Center the text within the paragraph tag */
+    text-align: center;
+    
+    /* 2. Smaller and lighter for a sophisticated look */
+    font-size: 0.85rem !important;  
+    font-weight: 500;        /* Use 500 instead of 700 for a thinner look */
+    
+    /* 3. Snaps the text to the very edge of its container */
+    margin-top: 0 !important;   
+    margin-bottom: 5px;      /* Small space below for the icon */
+    margin-left: 0 !important;
+    
+    line-height: 1.3;
+}
+
+/* The Refresh Icon - Forced Light Color */
+.refresh-icon-btn {
+    background-color: #DCE6DC !important; /* Forced Light Sage */
+    color: #2F3E2F !important;
+    
+    width: 35px; /* Slightly smaller to match the small font */
+    height: 35px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.refresh-icon-btn:hover {
+    background-color: #C2D1C2 !important;
+    transform: rotate(45deg);
+}
+/* This is the master box */
+.affirmation-container {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 10;
+
+}
+
+/* 2. Styling the Quote */
+#affirmation-quote {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 0.85rem !important;
+    color: #2F3E2F;
+    font-weight: 500;
+    
+    /* Make the font italic and ensure it doesn't wrap to a second line */
+    font-style: italic;
+    white-space: nowrap; 
+    
+    margin: 0 !important;
+}
+
+.affirmation-container {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.affirmation-label {
+    /* 1. Visibility: Make it larger and bold */
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 1.0rem !important; /* Increased from 0.7rem */
+    font-weight: 800 !important;   /* Extra bold for high visibility */
+    color: #4A5D4A !important;     /* A slightly darker sage for contrast */
+    
+    /* 2. Style: Premium spacing */
+    letter-spacing: 3px !important; 
+    text-transform: uppercase;
+    
+    /* 3. Centering: Ensure it sits in the middle */
+    display: block;
+    text-align: center;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+#affirmation-quote {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 1.0rem !important;
+    color: #2F3E2F;
+    font-style: italic;
+    font-weight: 600;
+    margin: 0 !important;
+    white-space: nowrap; /* Prevents the quote from jumping to a second line */
+}
+
+
+/* 4. The Cute Image */
+.cute-quote-image {
+    width: 18px;       /* Keep it small and delicate */
+    height: 18px;
+    opacity: 0.7; 
+    display: inline-block;     
+}
+
+/* This is the key to the single-line look */
+.affirmation-row {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;  /* Vertically centers the text and button */
+    gap: 8px;            /* Tight spacing between items */
+    margin-top: 2px;
+}
+/* Replace .go-back-outside with this */
+
+.back-link:hover {
+    opacity: 1;
+    color: #2F3E2F;          /* Charcoal on hover */
+    transform: translateY(-2px); /* Subtle lift instead of a side-nudge */
+}
+.check-in-section {
+    width: 100%;
+    margin-top: 40px;
+    text-align: left;
+}
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+}
+.back-link {
+    display: block;
+    width: fit-content;
+    margin: 16px auto 24px auto;  /* Less top margin on mobile */
+    
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #778E77;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    
+    /* Ensure it's never clipped */
+    position: relative;
+    z-index: 10;
+    padding-top: 8px;
+}
+
+/* Add this for mobile */
+@media (max-width: 768px) {
+    .back-link {
+        margin: 60px auto 20px auto;
+        font-size: 0.85rem;
+        padding: 8px 20px;
+        background: rgba(255,255,255,0.4);
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+    }
+}
+.check-in-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.check-in-titles h3 {
+    font-family: 'Playfair Display', serif; /* Or your chosen heading font */
+    font-size: 1.5rem;
+    color: #2F3E2F; /* Charcoal */
+    margin: 0;
+}
+
+.check-in-titles p {
+    font-family: 'Playfair Display', serif; /* Matching your header font */
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #7A8B7A;
+    opacity: 0.8;
+    margin-top: 2px;
+
+}
+
+.full-mood-link {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: #778E77; /* Sage green */
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+}
+
+.full-mood-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #5F735F;
+    transition: width 0.3s ease;
+}
+
+.full-mood-link:hover {
+    color: #2F3E2F; /* Darkens on hover */
+    opacity: 1;
+}
+
+.full-mood-link:hover::after {
+    width: 100%;
+}
+
+.mood-options {
+    display: flex;
+    gap: 22px; /* Increased space as requested */
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.mood-btn {
+    width: 65px; 
+    height: 65px;
+    flex: none;
+    border-radius: 50%;
+    cursor: pointer;
+    
+    /* 1. The Glass Base: Semi-transparent with a slight top-down gradient */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+
+    /* 2. Layered Shadows for 3D Depth */
+    box-shadow: 
+        /* External Glow (The soft aura around the marble) */
+        0 10px 20px rgba(0, 0, 0, 0.1),
+        0 0 15px rgba(255, 255, 255, 0.5),
+        /* Internal Specular Highlight (The white glint at the top) */
+        inset 0 8px 10px rgba(255, 255, 255, 0.8),
+        /* Internal Bottom Shadow (Creates thickness/depth) */
+        inset 0 -8px 12px rgba(0, 0, 0, 0.1),
+        /* Internal Side Glows */
+        inset 4px 0 8px rgba(255, 255, 255, 0.2),
+        inset -4px 0 8px rgba(255, 255, 255, 0.2);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mood-emoji {
+    font-size: 2.2rem; 
+    /* This makes the emoji look like it's INSIDE the sphere */
+    filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.2));
+    z-index: 2;
+    transition: transform 0.4s ease;
+}
+
+/* 3. The "Light Reflection" Overlay (Adds that extra 3D shine) */
+.mood-btn::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 12px;
+    width: 30%;
+    height: 20%;
+    background: rgba(255, 255, 255, 0.6);
+    filter: blur(3px);
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    pointer-events: none;
+}
+
+/* Hover "Super 3D" Effect */
+.mood-btn:hover {
+    transform: translateY(-12px) rotate(5deg);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 0 30px rgba(255, 255, 255, 0.8),
+        inset 0 10px 15px rgba(255, 255, 255, 0.9);
+}
+
+.mood-btn:hover .mood-emoji {
+    transform: scale(1.2) rotate(-5deg);
+}
+/* This class only changes the internal spacing for the mood screen */
+.mood-page-adjustment {
+    padding: 60px 50px; /* More breathing room */
+    max-width: 650px;   /* Slightly narrower than dashboard for focus */
+    text-align: center; /* Ensures everything stays centered */
+}
+
+/* Specific styling for the mood page title */
+.mood-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem;
+    color: #2F3E2F;
+    margin: 0;
+}
+
+.mood-title i {
+    color: #778E77; /* The sage green italic 'mood' */
+    font-style: italic;
+}
+
+/* =========================================
+   3. PROGRESS & STATS PAGE STYLES
+   ========================================= */
+/* 1. Reset the body to match the dashboard background */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    /* This is your ethereal blue/green gradient from the dashboard */
+    background: linear-gradient(135deg, #E0F2F1 0%, #B2DFDB 100%); 
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* 2. The Glass Card - EXACTLY like the dashboard */
+.glass-card {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 60px 50px; /* High padding for that spacious look */
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+/* 3. Typography Styles */
+.mood-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #2F3E2F;
+    margin: 0;
+}
+
+.mood-title i {
+    color: #778E77; /* Sage accent for "mood" */
+}
+
+.mood-subtitle {
+    color: #778E77;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+/* 4. The Reflection Box (Textarea) */
+.reflection-box {
+    text-align: left;
+    margin-top: 30px;
+}
+
+.reflection-box label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    color: #5F735F;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.reflection-box textarea {
+    width: 100%;
+    height: 100px;
+    border-radius: 20px;
+    border: 1px solid rgba(138, 163, 138, 0.2);
+    background: rgba(255, 255, 255, 0.4);
+    padding: 15px;
+    outline: none;
+    font-family: inherit;
+}
+
+/* 5. The Save Button */
+.save-btn {
+    width: 100%;
+    margin-top: 25px;
+    padding: 18px;
+    border-radius: 20px;
+    border: none;
+    background: #D1D8D1; /* Sage grey from your screenshot */
+    color: #5F735F;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.save-btn:hover {
+    background: #c5ccc5;
+    transform: translateY(-2px);
+}
+
+/* 6. The Back Link Journal */
+/* Styling for the Back to Dashboard Link */
+.back-link-journal {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none; /* Removes the default purple underline */
+    
+    /* Typography */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4A5D4A;          /* Sage Green to match your theme */
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    /* The "Pill" Shape */
+    background: rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(8px);
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* Space above the "Write your thoughts" header */
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Specifically styling the arrow symbol */
+.back-arrow {
+    margin-right: 8px;
+    display: inline-block;
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+
+/* Hover Effect */
+.back-link-journal:hover {
+    background: #FFFFFF;
+    color: #2F3E2F;          /* Darker charcoal for contrast */
+    transform: translateX(-3px); /* Subtle nudge to the left */
+}
+/* Layout for the emoticons row */
+.mood-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Adjust this to make them closer or further */
+    margin: 15px 0;
+    flex-wrap: wrap; /* Wraps them if the screen is small */
+}
+
+.mood-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.mood-item span {
+    font-size: 0.75rem;
+    color: #778E77;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+/* THE 3D CRYSTAL BUBBLE */
+.mood-btn {
+    width: 55px; 
+    height: 55px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem; /* Keeps emoticons big */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* 3D Depth Shadows */
+    box-shadow: 
+        inset 0 5px 8px rgba(255, 255, 255, 0.8),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Hover Effect */
+.mood-btn:hover {
+    transform: translateY(-8px) scale(1.1);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.08);
+}
+/* Grid Container */
+/* Mobile View (Default) */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column for easy tapping */
+    gap: 15px; /* Slightly smaller gap for small screens */
+    margin-top: 20px;
+}
+
+/* Tablet & Desktop View (Screens wider than 480px) */
+@media (min-width: 480px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+    }
+}
+.stat-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 22px; 
+    padding: 20px 15px; /* Enough room for the icon and text */
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+
+    /* THE FIX: Use percentage so they fill the space but stay side-by-side */
+    width: 75% !important;  /* Takes up almost half the screen width */
+    min-width: 150px;       /* Prevents them from getting "microscopic" */
+    margin: 0 !important;   /* Let the grid gap handle the spacing */
+    box-sizing: border-box;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+}
+
+/* Icons within the cards */
+.card-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-right: 20px;
+}
+
+/* Icon Background Colors from Screenshot */
+.icon-yellow { background-color: #FEF9E7; }
+.icon-green { background-color: #E8F6F3; }
+.icon-grey { background-color: #F2F4F4; }
+.icon-white { background-color: #FFFFFF; }
+
+/* Text within cards */
+.card-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #2F3E2F;
+    margin: 0;
+}
+
+.card-content p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    color: #778E77;
+    margin: 5px 0 0 0;
+}
+
+.arrow {
+    position: absolute;
+    right: 25px;
+    color: #BDC3C7;
+    font-size: 1.2rem;
+}
+
+/* Footer Counter Styling */
+.dashboard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+    padding: 0 10px;
+}
+
+.dashboard-footer p {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    color: #778E77;
+}
+
+.reset-link {
+    background: none;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    color: #778E77;
+    cursor: pointer;
+    font-weight: 600;
+}
+.progress-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.progress-item {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 15px 20px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.progress-date {
+    font-size: 0.75rem;
+    color: #778E77;
+}
+
+.progress-mood {
+    font-size: 0.85rem;
+    color: #2F3E2F;
+}
+.mood-btn.selected {
+    border: 2px solid #8AA38A !important; /* Your sage green */
+    background: rgba(138, 163, 138, 0.2) !important;
+    transform: scale(1.1);
+}
+.progress-page-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Updated Header Container Your Weekly Mood */
+/* Update this section in your CSS */
+.progress-header {
+    width: 100%;
+    display: block; 
+    margin-top: 200px; /* Adjusted slightly lower as you requested previously */
+    text-align: center; /* This ensures the text inside is centered */
+}
+
+.progress-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #333;
+    margin-top: 10px; 
+    margin-bottom: 0;
+    display: inline-block; /* Helps maintain the spacing around the text itself */
+}
+
+.progress-header span {
+    font-style: italic;
+    color: #8AA38A; /* Your Sage Green */
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Ensure 4 columns for the 1:3 ratio */
+    gap: 20px;
+    margin-top: 0; /* Remove any negative margins that might overlap the header */
+    align-items: start; /* - Prevents cards from stretching too tall */
+}
+
+/* Base Card Styling */
+.stat-mini-card {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* THE KEY FIX: Stretch the breakdown card across 3 columns */
+.breakdown-mini-card {
+    grid-column: span 3; 
+    padding: 25px !important;
+    background: white; /* Making it pop like your screenshot */
+}
+
+/* The Mini Card Container */
+.stat-mini-card {
+    background: rgba(255, 255, 255, 0.5); /* Soft glass effect */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 25px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    text-align: left; /* Aligned left to match your stats grid layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* The Label (Top Text) */
+.stat-mini-card label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8AA38A; /* Your signature Sage Green */
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+/* The Large Number (Value) */
+.stat-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #2F3E2F; /* Charcoal Forest */
+    margin: 0;
+    line-height: 1;
+}
+
+/* The Subtext (Bottom Text) */
+.stat-subtext {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: #7A8B7A; /* Muted Sage */
+    font-style: italic;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+/* Mood Breakdown List Styling */
+.breakdown-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Breathing room between rows */
+    width: 100%;
+}
+
+.breakdown-item {
+    width: 100%;
+}
+
+.breakdown-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.breakdown-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.breakdown-stats {
+    font-size: 0.8rem;
+    color: #bbb; /* Subtle grey for the % */
+}
+.progress-page-container {
+    max-width: 900px;
+    margin:  auto;
+    padding: 40px 20px;
+    /* Force vertical stacking so the header appears first */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+}
+
+.progress-header {
+    width: 100%;
+    display: block; /* Ensure it occupies its own space */
+}
+
+.progress-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #333;
+    margin: 0; /* Remove default margins that might hide the text */
+}
+
+/* Horizontal Progress Bars */
+.progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background-color: #f8f9f7;
+    border-radius: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #8AA38A; /* Sage Green */
+    border-radius: 10px;
+    width: 0%; /* Initial state for JS animation */
+    transition: width 0.8s ease-out;
+}
+
+/* Weekly Bar Chart (Check-ins per day) */
+/* The main container for the chart */
+.chart-card {
+    background: rgba(255, 255, 255, 0.45); /* Semi-transparent white */
+    backdrop-filter: blur(15px);           /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 30px;                   /* Smooth rounded corners */
+    padding: 30px;
+    margin-top: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05); /* Soft depth shadow */
+    text-align: center;
+}
+
+/* Header styling */
+.chart-card h3 {
+    font-family: 'Playfair Display', serif; /* Elegant heading font */
+    font-size: 1.4rem;
+    color: #2F3E2F;                         /* Charcoal forest color */
+    margin-bottom: 5px;
+}
+
+/* Subtitle styling */
+.chart-subtitle {
+    font-family: 'Montserrat', sans-serif;  /* Clean secondary font */
+    font-size: 0.85rem;
+    color: #7A8B7A;                         /* Muted sage green */
+    font-style: italic;                     /* Adds a "gentle" feel */
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+/* Container for the bars */
+.chart-bars {
+    display: flex !important; /* Force horizontal row */
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end; 
+    height: 180px;          
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    width: 100%; /* Ensure it spans the card width */
+}
+
+.bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%; 
+    width: 40px;
+    flex-shrink: 0; /* Prevents columns from squishing */
+}
+
+.bar {
+    background-color: #8AA38A; 
+    width: 25px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.8s ease-out;
+    /* Ensure height isn't literally 0 if data exists */
+    min-height: 2px; 
+}
+
+.bar-wrapper span {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: #888;
+}
+/* Updated Back Link */
+.back-link {
+    display: inline-block;    /* Changed from block to inline-block */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #778E77;           
+    text-decoration: none;   
+    opacity: 0.7;
+    margin: 0;                /* CRITICAL: Remove the '40px auto' */
+    transition: all 0.3s ease;
+}
+/* The Back Button on the Progress Page BACK DASHBOARD */
+/* Styling for the DASHBOARD back button as a White Pill */
+
+.settled-back-btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #2F3E2F;
+    background-color: #FFFFFF;
+    opacity: 0.5;
+
+    padding: 8px 20px;
+    border-radius: 50px;
+
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
+    margin-top: max(15px, env(safe-area-inset-top) + 10px);
+}
+
+/* Ensure the arrow inside behaves well */
+.back-arrow {
+    margin-right: 8px;
+    display: inline-block;
+}
+
+/* Hover effect */
+.settled-back-btn:hover {
+    background-color: #F8F9F8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+/* Ensure the wrapper is the reference point */
+.bar-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* The Tooltip Card */
+.mood-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 100%; /* Sits above the bar */
+    left: 50%;
+    transform: translate(-50%, -10px); /* Centers it and adds 10px gap */
+    
+    background-color: #FFFFFF;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 110px;
+    z-index: 10;
+    pointer-events: none; /* Prevents flickering */
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+/* Tooltip Text */
+.tooltip-day {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    margin: 0;
+    color: #7A8B7A;
+}
+
+.tooltip-mood {
+    font-family: 'Bellefair', serif;
+    font-size: 0.85rem;
+    margin: 3px 0 0 0;
+    color: #2F3E2F;
+}
+
+/* HOVER TRIGGER */
+.bar-wrapper:hover .mood-tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -20px); /* Slight lift on hover */
+}
+ /* BREATHE SECTION */
+.breathe-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #E0F2F1;
+}
+
+.top-nav {
+  
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 10px;
+}
+
+.back-btn {
+    text-decoration: none;
+    color: #7986CB;
+    font-size: 14px;
+}
+
+#solaceBackBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(8px);
+    color: #556B55;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+#solaceBackBtn:hover {
+    background: white;
+    transform: translateX(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.breathe-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.breathe-header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    color: #2e2e2e;
+}
+
+.breathe-header p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #777;
+}
+
+.breathing-card {
+    background: white;
+    padding: 40px 20px;
+    border-radius: 40px;
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+}
+
+.heart-wrapper {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.heart-animate {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: 50% 50%;
+}
+
+.heart-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+@keyframes breatheHeart {
+    0%   { transform: scale(1);    }
+    33%  { transform: scale(1.35); }
+    66%  { transform: scale(1.35); }
+    100% { transform: scale(1);    }
+}
+
+.heart-active {
+    animation: breatheHeart 12s ease-in-out infinite;
+}
+
+#instruction-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    color: #2e2e2e;
+    margin-bottom: 10px;
+}
+
+.begin-btn {
+    background: #D1D8D1;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.begin-btn:hover {
+    background: #B2C8BA;
+    color: white;
+}
+/* --- FLOATING HELP ICON --- */
+.floating-help-circle {
+    position: fixed !important;
+    bottom: 25px !important;
+    right: 25px !important;
+    z-index: 9999 !important;
+    
+    /* Perfect Circle Sizing */
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Aesthetics */
+    background-color: #E57373 !important; /* Your soft coral red */
+    color: white !important;
+    border-radius: 50% !important;
+    text-decoration: none !important;
+    
+    /* Professional Shadow & Transition */
+    box-shadow: 0 4px 12px rgba(229, 115, 115, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Icon Sizing */
+.floating-help-circle .material-symbols-outlined {
+    font-size: 24px !important;
+    font-variation-settings: 'FILL' 1, 'wght' 400 !important;
+}
+
+/* Hover Effect */
+.floating-help-circle:hover {
+    transform: scale(1.1) !important;
+    background-color: #EF5350 !important;
+    box-shadow: 0 6px 18px rgba(229, 115, 115, 0.5) !important;
+}
+
+/* Ensure it stays small on mobile */
+@media (max-width: 480px) {
+    .floating-help-circle {
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 45px !important;
+        height: 45px !important;
+    }
+}
+/*SUPPORT PAGE*/
+
+.support-body {
+    background-color: #E1F5FE; opacity: 0.75;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 30px 15px; /* Reduced outer padding */
+}
+
+.support-container {
+    width: 100%;
+    max-width: 380px; /* Smaller container width */
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Tighter gap between cards */
+    text-align: center;
+}
+
+.support-card {
+    background: white;
+    padding: 20px; /* Reduced card padding */
+    border-radius: 20px; /* Slightly tighter corners */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+}
+
+/* Typography Updates */
+.header-card h1 { 
+    font-size: 1.1rem; /* Scaled down */
+    color: #333; 
+    margin-bottom: 8px; 
+}
+
+.header-card p { 
+    font-size: 0.8rem; /* Smaller font */
+    color: #666; 
+    line-height: 1.4; 
+}
+
+.icon-circle {
+    background: #F5F5F5;
+    width: 40px; /* Smaller icon container */
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    color: #888;
+}
+
+.icon-circle .material-symbols-outlined {
+    font-size: 18px !important; /* Smaller icon */
+}
+
+.card-title h2 {
+    font-size: 0.85rem; /* Smaller sub-headers */
+    letter-spacing: 0.5px;
+    color: #444;
+}
+
+.status-dot.green {
+    width: 8px; /* Smaller status dot */
+    height: 8px;
+    background: linear-gradient(135deg, #A5D6A7, #66BB6A);
+    border-radius: 50%;
+}
+
+.phone-line {
+    display: flex;
+    align-items: center;
+    background: #F8FDFF;
+    padding: 10px 15px; /* Thinner phone buttons */
+    border-radius: 12px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 0.85rem; /* Smaller phone number text */
+    gap: 12px;
+    border: 1px solid #F0F0F0;
+    transition: 0.2s;
+}
+
+.phone-line .material-symbols-outlined {
+    font-size: 16px !important;
+}
+
+.phone-line:hover { 
+    background: #E3F2FD; 
+}
+
+.emergency-footer {
+    font-size: 0.7rem; /* Tiny footer text */
+    color: #999;
+    margin-top: 15px;
+    padding: 0 10px;
+}
+/* Back Button Styling for Support Page */
+
+.support-container .back-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
+    
+    /* Sizing & Shape */
+    padding: 3px 10px !important;    /* Reduced from 6px 14px */
+    border-radius: 50px !important;
+    font-size: 0.68rem !important;   /* Reduced from 0.75rem */
+    font-weight: 500 !important;
+    width: fit-content !important;   /* Ensures it only wraps the text */
+    
+    /* Aesthetic */
+    color: #78909C !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    margin-bottom: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.support-container .back-btn:hover {
+    background: white !important;
+    transform: translateX(-2px) !important;
+}
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.entry-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #555;
+}
+/*JOURNAL BODY*/
+.journal-body {
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding-top: 40px !important;
+}
+/*ENTRY CARD*/
+.entry-card {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.recent-entries-section {
+    width: 100%;
+    max-width: 680px; /* match this to your .glass-card or .journal-card max-width */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.entry-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.entry-date {
+    font-size: 12px;
+    color: #888;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.entry-text {
+    font-size: 14px;
+    color: #444;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.7;
+    margin: 0 0 12px 0;
+}
+
+.mood-tag {
+    display: inline-block;
+    background: rgba(180, 220, 210, 0.4);
+    color: #4a9e8e;
+    font-size: 11px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.action-btn:hover {
+    opacity: 1;
+}
+/* PHONE ICON DASHBOARD*/
+.support-fab {
+    background-color: #9dbcae; /* Matching your sage color from the screenshot */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.support-link-wrapper {
+    text-decoration: none;
+    position: fixed; /* Keeps it in place on the page */
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.support-link-wrapper:hover .support-fab {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+}
+html, body {
+    min-height: 100%;
+    background: linear-gradient(180deg, #AEE7FF 0%, #E8F9EE 100%) !important;
+    background-attachment: fixed !important;
+}
+/*RESET*/
+.dashboard-body .dashboard-footer {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+}
+
+.dashboard-body #resetBtn {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: none;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    color: #778E77;
+    cursor: pointer;
+    font-weight: 600;
+}
+.nav-header {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.nav-btn {
+    /* This part mimics the exact look of your original button */
+    background-color: rgba(255, 255, 255, 0.4); 
+    color: #88a4a4 !important; /* Force the muted teal color */
+    text-decoration: none !important; /* Force removal of the underline */
+    
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    display: inline-flex;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #6d8a8a !important;
+}
+.stats-footer {
+    position: fixed; /* Or absolute, depending on your layout */
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#entry-count {
+    margin: 0;
+    font-size: 12px;
+    color: #a4b6b6; /* Muted grey/teal */
+}
+
+.text-reset-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin-top: 5px;
+    color: #a4b6b6;
+    font-size: 12p x;
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.3s;
+}
+
+.text-reset-btn:hover {
+    color: #7a8c8c;
+}

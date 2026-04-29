@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bottomnav.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solace - View Progress</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="progress-page-container">
+   <header class="progress-header">
+    <div class="header-row">
+        <h1>Your weekly <span>mood</span> 🌿</h1>
+        <a href="dashboard.html" class="settled-back-btn">
+            <span class="back-arrow">←</span> Dashboard
+        </a>
+    </div>
+    <br>
+    <p>A gentle look back at the last seven days.</p>
+</header>
+
+   <div class="stats-grid">
+    <div class="stat-mini-card">
+        <label>ENTRIES THIS WEEK</label>
+        <div class="stat-value" id="weekCount">0</div>
+        <span class="stat-subtext">Keep going</span>
+    </div>
+
+    <div class="stat-mini-card breakdown-mini-card">
+        <label>MOOD BREAKDOWN</label>
+        <div id="moodBreakdownList" class="breakdown-container">
+            </div>
+    </div>
+</div>
+
+ <div class="chart-card">
+    <h3>Check-ins per day</h3>
+    <p class="chart-subtitle">Last 7 days</p>
+
+    <div class="chart-bars" id="barContainer">
+        <div class="bar-wrapper" data-day="0">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Sun</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Sun</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="1">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Mon</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Mon</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="2">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Tue</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Tue</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="3">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Wed</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Wed</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="4">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Thu</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Thu</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="5">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Fri</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Fri</span>
+        </div>
+
+        <div class="bar-wrapper" data-day="6">
+            <div class="bar" style="height: 0%"></div>
+            <div class="mood-tooltip">
+                <p class="tooltip-day">Sat</p>
+                <p class="tooltip-mood">Check-ins: <b>0</b></p>
+            </div>
+            <span>Sat</span>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Fetch data from LocalStorage
+    const history = JSON.parse(localStorage.getItem('moodHistory')) || [];
+    const counts = { 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
+    const moodCounts = {};
+    
+    // 2. Map for Emojis - Matches your dashboard exactly
+    const emojiMap = { 
+        "Joyful": "🤩", "Calm": "😌", "Okay": "🙂", 
+        "Meh": "😐", "Sad": "😢", "Angry": "😡", "Anxious": "😰" 
+    };
+
+    const breakdownContainer = document.getElementById('moodBreakdownList');
+
+    if (history.length > 0) {
+        // 3. Process History
+        history.forEach(entry => {
+            const d = new Date(entry.date);
+            if (!isNaN(d.getTime())) {
+                counts[d.getDay()]++;
+            }
+            // Only tally if mood is a valid string
+            if (entry.mood && entry.mood !== "undefined") {
+                moodCounts[entry.mood] = (moodCounts[entry.mood] || 0) + 1;
+            }
+        });
+
+        // 4. Update the Mood Breakdown UI
+breakdownContainer.innerHTML = Object.keys(moodCounts).map(mood => {
+    const count = moodCounts[mood];
+    const percentage = Math.round((count / history.length) * 100);
+    
+    // We are no longer calling the emojiMap here 
+    // to ensure only the text of the mood is displayed.
+
+    return `
+        <div class="breakdown-item">
+            <div class="breakdown-info">
+                <div class="breakdown-label">
+                    <span style="font-weight: 500; font-size: 1rem; color: #2F3E2F;">${mood}</span>
+                </div>
+                <div class="breakdown-stats" style="color: #7A8B7A; font-size: 0.85rem;">
+                    ${count} - ${percentage}%
+                </div>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+            </div>
+        </div>
+    `;
+}).join('');
+
+      // 5. Update the Weekly Bar Chart UI
+const maxEntries = 5; 
+Object.keys(counts).forEach(dayIndex => {
+    const wrapper = document.querySelector(`.bar-wrapper[data-day="${dayIndex}"]`);
+    if (wrapper) {
+        const bar = wrapper.querySelector('.bar');
+        const height = Math.min((counts[dayIndex] / maxEntries) * 100, 100);
+        bar.style.height = height + "%";
+
+        // NEW: This updates the "Check-ins: 0" text to the actual number
+        const tooltipCount = wrapper.querySelector('.mood-tooltip b');
+        if (tooltipCount) {
+            tooltipCount.innerText = counts[dayIndex];
+        }
+    }
+});
+
+        // 6. Update Stats Cards
+        document.getElementById('weekCount').innerText = history.length;
+        
+    } else {
+        if (breakdownContainer) {
+            breakdownContainer.innerHTML = "<p style='color: #888; text-align: center;'>No mood data recorded yet.</p>";
+        }
+    }
+});
+</script>
+<script src="script.js"></script>
+</body>
+</html>

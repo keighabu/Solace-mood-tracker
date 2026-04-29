@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <link rel="stylesheet" href="bottomnav.css">
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+    <title>Solace | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bellefair&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body class="dashboard-body">
+
+    <img src="logo.png" alt="Solace Logo" class="logo logo-dashboard">
+     <p id="dashboard-date" class="date-text"></p>
+
+        <h2 id="welcome-msg" class="greeting-text"> </h2>
+        
+        <p class="description">How are you feeling today?-Take a deep breath. You are in a safe space.</p>
+        <br>
+
+          <a href="index.html" class="back-link">← EXIT </a>
+        
+        
+<div class="glass-card">
+    <div class="affirmation-container">
+        <p class="affirmation-label">Daily Affirmation</p>
+        <div class="affirmation-row">
+            <p id="affirmation-quote">"Your potential is endless."</p>
+            <span class="cute-emoji">🌸</span>
+         <button class="refresh-icon-btn" onclick="refreshAffirmation()">↻</button>
+        </div>
+
+
+</div>
+<br>
+<br>
+<br>
+<br>
+<div class="check-in-section">
+    <div class="check-in-header">
+        <div class="check-in-titles">
+            <h3>A quick check-in</h3>
+            <br>
+            <p>Tap one. We'll remember.</p>
+        </div>
+       
+</div>
+<div class="dashboard-grid">
+    <a href="mood-screen.html" class="stat-card">
+        <div class="card-icon icon-yellow">😊</div>
+        <div class="card-content">
+            <h3>Log Mood</h3>
+            <p>How do you feel?</p>
+        </div>
+        <span class="arrow">→</span>
+    </a>
+
+    <a href="journal.html" class="stat-card">
+        <div class="card-icon icon-green">📖</div>
+        <div class="card-content">
+            <h3>Write Journal</h3>
+            <p>Pour it out</p>
+        </div>
+        <span class="arrow">→</span>
+    </a>
+
+    <a href="progress.html" class="stat-card">
+        <div class="card-icon icon-grey">📈</div>
+        <div class="card-content">
+            <h3>View Progress</h3>
+            <p>Your mood trends</p>
+        </div>
+        <span class="arrow">→</span>
+    </a>
+
+    <a href="breathe.html" class="stat-card">
+        <div class="card-icon icon-white">🌬️</div>
+        <div class="card-content">
+            <h3>Breathe</h3>
+            <p>A calm moment</p>
+        </div>
+        <span class="arrow">→</span>
+    </a>
+</div>
+
+<div class="dashboard-footer">
+    <div class="dashboard-controls">
+    <!-- Place this near your "New Entry" or "View Journal" buttons -->
+    <p id="entryCounter">0 mood entries logged</p>
+    <button id="resetBtn" class="reset-link">Reset</button>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const count = localStorage.getItem('moodCount') || 0;
+        const counterElement = document.getElementById('entryCounter');
+        if (counterElement) {
+            counterElement.innerText = `${count} mood entries logged`;
+        }
+
+        const resetBtn = document.getElementById('resetBtn');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                localStorage.setItem('moodCount', 0);
+                location.reload();
+            });
+        }
+    });
+</script>
+    <script>
+        function updateDashboard() {
+            const dateElement = document.getElementById('dashboard-date');
+            const welcomeMsg = document.getElementById('welcome-msg');
+            const now = new Date();
+
+            // Handle the Date
+            const dateOptions = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+            dateElement.innerText = now.toLocaleDateString('en-US', dateOptions);
+
+            // Handle the Time-Based Greeting
+            const hour = now.getHours();
+            let greeting = "Good evening"; // Default
+
+            if (hour < 12) greeting = "Good morning";
+            else if (hour < 18) greeting = "Good afternoon";
+
+            // Get name and update the ONLY welcome header
+            const savedName = localStorage.getItem('user_name');
+            if (savedName) {
+                welcomeMsg.innerText = `${greeting}, ${savedName}!`;
+            } else {
+                welcomeMsg.innerText = `${greeting}!`;
+            }
+        }
+
+        updateDashboard();
+
+const affirmations = [
+  "Your potential is endless.",
+  "You are enough, just as you are.",
+  "Every day is a fresh start.",
+  "You are worthy of love and kindness.",
+  "Small steps still move you forward.",
+  "You are braver than you believe.",
+  "It's okay to take things one day at a time."
+];
+function refreshAffirmation() {
+  const el = document.getElementById('affirmation-quote');
+  const current = el.innerText.replace(/"/g, '');
+  const pool = affirmations.filter(a => a !== current);
+  const next = pool[Math.floor(Math.random() * pool.length)];
+  el.innerText = `"${next}"`;
+}
+    </script>
+<!-- Link to your support page -->
+<a href="support.html" class="support-link-wrapper" title="Contact Support">
+    <div class="support-fab">
+        <!-- SVG Phone Icon -->
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+    </div>
+</a>
+<script src="script.js"></script>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="bottomnav.css">
+    <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Solace - Journal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="journal-body">
+<body class="journal-page">
+
+    <div class="progress-page-container">
+        <div class="glass-card journal-card">
+            
+            <a href="dashboard.html" class="back-link-journal">
+                <span class="back-arrow">←</span> Dashboard
+            </a>
+
+            <header class="journal-header">
+                <h1>Write your <i>thoughts</i> <span class="heart-icon">🤍</span></h1>
+                <p class="description">Let it all out — your words are safe here</p>
+            </header>
+
+            <div class="reflection-box">
+                <textarea id="journal-input" placeholder="Today I feel..."></textarea>
+            </div>
+
+            <button class="save-btn" id="saveJournal">
+                <span class="save-icon">💾</span> Save Entry
+            </button>
+        </div>
+    </div>
+    <div class="recent-entries-section">
+    <h3>RECENT ENTRIES</h3>
+    <br>
+    <div id="entriesList">
+        </div>
+</div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const journalInput = document.getElementById('journal-input');
+    const saveBtn = document.getElementById('saveJournal');
+    const entriesList = document.getElementById('entriesList');
+    let editingIndex = null;
+
+    // 1. Function to draw the cards on the screen
+   function renderEntries() {
+    const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+    const entriesList = document.getElementById('entriesList'); // Ensure this ID matches your HTML
+    
+    entriesList.innerHTML = entries.map((entry, index) => {
+        return `
+            <div class="entry-card">
+                <div class="entry-header">
+                    <span class="entry-date">${new Date(entry.date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
+                    
+                    <div class="entry-actions" style="display: flex; gap: 15px;">
+                        <button class="action-btn" onclick="editEntry(${index})" title="Edit">✏️</button>
+<button class="action-btn" onclick="deleteEntry(${index})" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                <p class="entry-text">${entry.content}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+    // 2. Logic for the Delete button (attached to window so HTML can see it)
+   window.deleteEntry = (index) => {
+    // 1. Ask for confirmation
+    if (confirm("Delete this thought?")) {
+        // 2. Get the current list from storage
+        let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        
+        // 3. Remove the item at the specific index
+        entries.splice(index, 1);
+        
+        // 4. Save the updated list back to localStorage
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+        
+        // 5. CRITICAL: Refresh the display so the entry disappears immediately
+        renderEntries();
+    }
+};
+    // 3. Logic for the Edit button
+    window.editEntry = (index) => {
+        let entries = JSON.parse(localStorage.getItem('journalEntries'));
+        journalInput.value = entries[index].content;
+        editingIndex = index;
+        saveBtn.innerHTML = '📝 Update Entry';
+        journalInput.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    // 4. Save logic
+    saveBtn.addEventListener('click', () => {
+        const content = journalInput.value.trim();
+        if (!content) return;
+
+        let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+        if (editingIndex !== null) {
+            entries[editingIndex].content = content;
+            editingIndex = null;
+            saveBtn.innerHTML = '💾 Save Entry';
+        } else {
+            entries.unshift({ date: new Date().toISOString(), content: content });
+        }
+
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+        journalInput.value = "";
+        renderEntries();
+    });
+
+    // Run this immediately to show existing entries on page load
+    renderEntries();
+});
+</script>
+<script src="script.js"></script>
+</body>
+</html>

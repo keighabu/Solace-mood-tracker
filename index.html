@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Tracker</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <img src="logo.png" alt="Solace Logo" class="logo">
+    <p class="tagline"> YOUR GENTLE SPACE</p>
+    <div class="glass-card">
+        <h2>Welcome to Solace</h2>
+        <p class="description"> A gentle space to breathe, reflect, and grow.</p>
+        <br>
+        <p id="current-date" class="date-display"></p>
+        <p class="question">Let's begin with your name.</p>
+
+<input type="text" id="user-name-input" placeholder="Enter your name...">
+<br>
+<br>
+<button onclick="startJourney()" class="start-btn">Start Journey</button>
+
+        </div>
+       <script>
+    function startJourney() {
+        // 1. Get the name from the input box
+        const nameInput = document.getElementById('user-name-input');
+        const name = nameInput.value.trim();
+
+        // 2. Check if the name is empty
+        if (name === "") {
+            alert("Please enter your name to begin your journey.");
+            return; // Stops the function if no name is entered
+        }
+
+        // 3. Save the name to Local Storage
+        localStorage.setItem('user_name', name);
+
+        // 4. Redirect to the Dashboard
+        window.location.href = 'dashboard.html';
+    }
+</script>
+<a href="support.html" class="floating-help-circle" title="Get Support">
+    <span class="material-symbols-outlined">call</span>
+</a>
+    </body>
+</html>
