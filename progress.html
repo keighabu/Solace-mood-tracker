@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solace | Progress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bottomnav.css">
+  <style>
+    /* Mood Calendar */
+    .calendar-card {
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+      padding: 24px 20px;
+      margin-top: 24px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .calendar-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #2F3E2F;
+      margin: 0;
+    }
+
+    .calendar-title span {
+      font-style: italic;
+      color: #8AA38A;
+    }
+
+    .calendar-month {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      color: #778E77;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .calendar-grid {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .calendar-grid th {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #8AA38A;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 0;
+      text-align: center;
+    }
+
+    .calendar-grid td {
+      text-align: center;
+      padding: 3px;
+    }
+
+    .cal-day {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #555;
+      transition: all 0.2s ease;
+      cursor: default;
+      position: relative;
+    }
+
+    .cal-day.today {
+      border: 2px solid #8AA38A;
+      font-weight: 700;
+      color: #2F3E2F;
+    }
+
+    .cal-day.has-mood {
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+
+    .cal-day.has-mood:hover .cal-tooltip {
+      opacity: 1;
+      transform: translateY(-8px);
+    }
+
+    .cal-tooltip {
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-4px);
+      background: white;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      color: #333;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      opacity: 0;
+      transition: all 0.2s ease;
+      pointer-events: none;
+      z-index: 10;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Mood Colors */
+    .mood-Joyful  { background: linear-gradient(135deg, #FFEAA7, #FDCB6E); }
+    .mood-Calm    { background: linear-gradient(135deg, #74B9FF, #0984E3); }
+    .mood-Okay    { background: linear-gradient(135deg, #55EFC4, #00B894); }
+    .mood-Meh     { background: linear-gradient(135deg, #DFE6E9, #B2BEC3); }
+    .mood-Sad     { background: linear-gradient(135deg, #636E72, #2D3436); }
+    .mood-Angry   { background: linear-gradient(135deg, #FF7675, #D63031); }
+    .mood-Anxious { background: linear-gradient(135deg, #A29BFE, #6C5CE7); }
+
+    /* Legend */
+    .cal-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-top: 16px;
+      justify-content: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      color: #555;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .cal-day {
+        width: 30px;
+        height: 30px;
+        font-size: 0.72rem;
+        border-radius: 8px;
+      }
+      .calendar-grid th {
+        font-size: 0.62rem;
+      }
+    }
+  </style>
+</head>
+<body class="progress-body">
+
+  <div class="progress-page-container">
+
+    <header class="progress-header">
+      <div class="header-row">
+        <h1>Your weekly <span>mood</span> 🌿</h1>
+        <a href="dashboard.html" class="settled-back-btn">
+          <span class="back-arrow">←</span> Dashboard
+        </a>
+      </div>
+      <p>A gentle look back at the last seven days.</p>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-mini-card">
+        <label>Entries This Week</label>
+        <div class="stat-value" id="weekCount">0</div>
+        <span class="stat-subtext">Keep going</span>
+      </div>
+
+      <div class="stat-mini-card breakdown-mini-card">
+        <label>Mood Breakdown</label>
+        <div id="moodBreakdownList" class="breakdown-container">
+          <p style="color:#aaa;text-align:center;font-style:italic;">No data yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mood Calendar -->
+    <div class="calendar-card">
+      <div class="calendar-header">
+        <h3 class="calendar-title">Mood <span>Calendar</span> 📅</h3>
+        <span class="calendar-month" id="calMonthLabel"></span>
+      </div>
+      <table class="calendar-grid">
+        <thead>
+          <tr>
+            <th>Sun</th><th>Mon</th><th>Tue</th>
+            <th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+          </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+      </table>
+      <div class="cal-legend">
+        <div class="legend-item"><div class="legend-dot mood-Joyful"></div> Joyful</div>
+        <div class="legend-item"><div class="legend-dot mood-Calm"></div> Calm</div>
+        <div class="legend-item"><div class="legend-dot mood-Okay"></div> Okay</div>
+        <div class="legend-item"><div class="legend-dot mood-Meh"></div> Meh</div>
+        <div class="legend-item"><div class="legend-dot mood-Sad"></div> Sad</div>
+        <div class="legend-item"><div class="legend-dot mood-Angry"></div> Angry</div>
+        <div class="legend-item"><div class="legend-dot mood-Anxious"></div> Anxious</div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="chart-card">
+      <h3>Check-ins per day</h3>
+      <p class="chart-subtitle">Last 7 days</p>
+      <div class="chart-bars" id="barContainer">
+        <div class="bar-wrapper" data-day="0">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Sunday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Sun</span>
+        </div>
+        <div class="bar-wrapper" data-day="1">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Monday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Mon</span>
+        </div>
+        <div class="bar-wrapper" data-day="2">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Tuesday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Tue</span>
+        </div>
+        <div class="bar-wrapper" data-day="3">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Wednesday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Wed</span>
+        </div>
+        <div class="bar-wrapper" data-day="4">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Thursday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Thu</span>
+        </div>
+        <div class="bar-wrapper" data-day="5">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Friday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Fri</span>
+        </div>
+        <div class="bar-wrapper" data-day="6">
+          <div class="bar" style="height:0%"></div>
+          <div class="mood-tooltip"><p class="tooltip-day">Saturday</p><p class="tooltip-mood">Check-ins: <b>0</b></p></div>
+          <span>Sat</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const history = JSON.parse(localStorage.getItem('moodHistory')) || [];
+      const counts = { 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
+      const moodCounts = {};
+      const breakdownContainer = document.getElementById('moodBreakdownList');
+      const weekCountEl = document.getElementById('weekCount');
+
+      if (weekCountEl) weekCountEl.innerText = history.length;
+
+      const emojiMap = {
+        "Joyful": "🤩", "Calm": "😌", "Okay": "🙂",
+        "Meh": "😐", "Sad": "😢", "Angry": "😡", "Anxious": "😰"
+      };
+
+      if (history.length > 0) {
+        history.forEach(entry => {
+          const d = new Date(entry.date);
+          if (!isNaN(d.getTime())) counts[d.getDay()]++;
+          if (entry.mood && entry.mood !== 'undefined') {
+            moodCounts[entry.mood] = (moodCounts[entry.mood] || 0) + 1;
+          }
+        });
+
+        breakdownContainer.innerHTML = Object.keys(moodCounts).map(mood => {
+          const count = moodCounts[mood];
+          const pct = Math.round((count / history.length) * 100);
+          const emoji = emojiMap[mood] || "✨";
+          return `
+            <div class="breakdown-item">
+              <div class="breakdown-info">
+                <div class="breakdown-label">${emoji} ${mood}</div>
+                <div class="breakdown-stats">${count} · ${pct}%</div>
+              </div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" style="width:${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        const maxEntries = Math.max(5, ...Object.values(counts));
+        Object.keys(counts).forEach(dayIndex => {
+          const wrapper = document.querySelector(`.bar-wrapper[data-day="${dayIndex}"]`);
+          if (!wrapper) return;
+          const bar = wrapper.querySelector('.bar');
+          const height = Math.min((counts[dayIndex] / maxEntries) * 100, 100);
+          setTimeout(() => { bar.style.height = height + '%'; }, 100);
+          const tooltipCount = wrapper.querySelector('.mood-tooltip b');
+          if (tooltipCount) tooltipCount.innerText = counts[dayIndex];
+        });
+
+      } else {
+        breakdownContainer.innerHTML = '<p style="color:#aaa;text-align:center;font-style:italic;">No mood data recorded yet.</p>';
+      }
+
+      // ── Build Mood Calendar ──
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.getMonth();
+
+      document.getElementById('calMonthLabel').innerText = now.toLocaleDateString('en-US', {
+        month: 'long', year: 'numeric'
+      });
+
+      // Map mood entries to day-of-month for this month
+      const dayMoodMap = {};
+      history.forEach(entry => {
+        const d = new Date(entry.date);
+        if (d.getFullYear() === year && d.getMonth() === month) {
+          const day = d.getDate();
+          // Keep last mood logged for that day
+          dayMoodMap[day] = entry.mood;
+        }
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = now.getDate();
+
+      let html = '<tr>';
+      // Empty cells before first day
+      for (let i = 0; i < firstDay; i++) {
+        html += '<td></td>';
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const col = (firstDay + day - 1) % 7;
+        const mood = dayMoodMap[day];
+        const isToday = day === today;
+        const emoji = mood ? (emojiMap[mood] || '') : '';
+
+        html += `<td>
+          <div class="cal-day ${isToday ? 'today' : ''} ${mood ? 'has-mood mood-' + mood : ''}">
+            ${mood ? emoji : day}
+            ${mood ? `<div class="cal-tooltip">${day} — ${mood}</div>` : ''}
+          </div>
+        </td>`;
+
+        // New row on Saturday
+        if (col === 6 && day !== daysInMonth) html += '</tr><tr>';
+      }
+
+      // Fill remaining cells
+      const lastCol = (firstDay + daysInMonth - 1) % 7;
+      if (lastCol < 6) {
+        for (let i = lastCol + 1; i <= 6; i++) html += '<td></td>';
+      }
+      html += '</tr>';
+
+      document.getElementById('calendarBody').innerHTML = html;
+    });
+  </script>
+
+  <script src="script.js"></script>
+  <script>
+    function makeBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.random() * 60 + 15;
+      const duration = Math.random() * 12 + 8;
+      const colorDur = Math.random() * 8 + 6;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.bottom = '-' + size + 'px';
+      b.style.animationDuration = duration + 's, ' + colorDur + 's';
+      b.style.animationDelay = (Math.random() * 3) + 's, 0s';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), (duration + 4) * 1000);
+    }
+    for (let i = 0; i < 15; i++) setTimeout(makeBubble, i * 400);
+    setInterval(makeBubble, 1200);
+  </script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solace | Breathe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bottomnav.css">
+  <style>
+    /* Breathing Ring */
+    .heart-wrapper {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .breathing-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 3px solid rgba(138, 163, 138, 0.4);
+      box-shadow: 0 0 0 6px rgba(138, 163, 138, 0.1), 0 0 20px rgba(138, 163, 138, 0.2);
+      transition: transform 4s ease-in-out, border-color 4s ease-in-out, box-shadow 4s ease-in-out;
+      pointer-events: none;
+    }
+
+    .breathing-ring-2 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(138, 163, 138, 0.2);
+      transition: transform 4s ease-in-out, opacity 4s ease-in-out;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .ring-inhale { transform: translate(-50%, -50%) scale(1.35) !important; border-color: rgba(85, 239, 196, 0.7) !important; box-shadow: 0 0 0 8px rgba(85, 239, 196, 0.1), 0 0 35px rgba(85, 239, 196, 0.3) !important; }
+    .ring-2-inhale { transform: translate(-50%, -50%) scale(1.55) !important; opacity: 0.15 !important; }
+    .ring-hold { transform: translate(-50%, -50%) scale(1.35) !important; border-color: rgba(116, 185, 255, 0.7) !important; box-shadow: 0 0 0 8px rgba(116, 185, 255, 0.1), 0 0 35px rgba(116, 185, 255, 0.3) !important; }
+    .ring-2-hold { transform: translate(-50%, -50%) scale(1.55) !important; opacity: 0.15 !important; }
+    .ring-exhale { transform: translate(-50%, -50%) scale(1) !important; border-color: rgba(138, 163, 138, 0.4) !important; box-shadow: 0 0 0 6px rgba(138, 163, 138, 0.1), 0 0 20px rgba(138, 163, 138, 0.2) !important; }
+    .ring-2-exhale { transform: translate(-50%, -50%) scale(1) !important; opacity: 0.5 !important; }
+
+    .heart-animate {
+      position: relative;
+      z-index: 2;
+      width: 130px;
+      height: 130px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: 50% 50%;
+    }
+
+    #instruction-text { transition: color 1s ease; }
+    .phase-inhale { color: #00B894; }
+    .phase-hold   { color: #0984E3; }
+    .phase-exhale { color: #8AA38A; }
+
+    .countdown {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #8AA38A;
+      letter-spacing: 2px;
+      margin-top: 4px;
+      min-height: 24px;
+      transition: color 1s ease;
+    }
+
+    /* Sound Toggle */
+    .sound-controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .sound-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1.5px solid rgba(138, 163, 138, 0.4);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #4a5a4a;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sound-btn:hover {
+      background: rgba(138, 163, 138, 0.15);
+      border-color: #8AA38A;
+    }
+
+    .sound-btn.active {
+      background: rgba(138, 163, 138, 0.25);
+      border-color: #8AA38A;
+      color: #2F3E2F;
+      box-shadow: 0 3px 10px rgba(138, 163, 138, 0.3);
+    }
+
+    .sound-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.72rem;
+      color: #8AA38A;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body class="breathe-page-body">
+
+  <div class="breathe-container">
+
+    <nav class="top-nav">
+      <a href="dashboard.html" class="back-btn">← Back</a>
+    </nav>
+
+    <header class="breathe-header">
+      <h1>Take a moment to breathe 🌿</h1>
+      <p>A guided 4-4-4 breathing exercise</p>
+    </header>
+
+    <main class="breathing-card">
+      <div class="heart-wrapper">
+        <div class="breathing-ring-2" id="breathingRing2"></div>
+        <div class="breathing-ring" id="breathingRing"></div>
+        <div id="breathingHeart" class="heart-animate">
+          <svg class="heart-svg" viewBox="48 30 204 198" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="heartGrad" cx="38%" cy="32%" r="60%">
+                <stop offset="0%" stop-color="#daeee3"/>
+                <stop offset="40%" stop-color="#B2C8BA"/>
+                <stop offset="100%" stop-color="#6a9a7a"/>
+              </radialGradient>
+              <radialGradient id="shineGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="white" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="white" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <path d="M150,228 C150,228 48,160 48,88 C48,53 70,30 100,30 C118,30 134,40 150,58 C166,40 182,30 200,30 C230,30 252,53 252,88 C252,160 150,228 150,228 Z" fill="url(#heartGrad)"/>
+            <path d="M150,228 C150,228 48,160 48,88 C48,53 70,30 100,30 C118,30 134,40 150,58 C166,40 182,30 200,30 C230,30 252,53 252,88 C252,160 150,228 150,228 Z" fill="none" stroke="#5a8a6a" stroke-width="1" opacity="0.4"/>
+            <path d="M100,45 C112,38 126,40 138,50 C143,44 147,39 150,36 C153,39 157,44 162,50 C174,40 188,38 200,45 C182,30 166,40 150,58 C134,40 118,30 100,30 C70,30 48,53 48,88 C48,66 65,46 100,45 Z" fill="white" opacity="0.18"/>
+            <ellipse cx="112" cy="64" rx="20" ry="13" fill="url(#shineGrad)" opacity="0.7" transform="rotate(-25,112,64)"/>
+            <path d="M75,76 C72,93 70,113 76,136" fill="none" stroke="#6a9a7a" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/>
+            <path d="M103,44 C111,40 120,39 129,43" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+          </svg>
+        </div>
+      </div>
+
+      <h2 id="instruction-text">Ready when you are</h2>
+      <p class="countdown" id="countdownText"></p>
+      <button id="startBreathe" class="begin-btn">▶ Begin</button>
+
+      <!-- Sound Controls -->
+      <p class="sound-label">Ambient Sound</p>
+      <div class="sound-controls">
+        <button class="sound-btn" id="btnRain" onclick="toggleSound('rain')">🌧️ Rain</button>
+        <button class="sound-btn" id="btnWhite" onclick="toggleSound('white')">🌫️ White Noise</button>
+        <button class="sound-btn" id="btnForest" onclick="toggleSound('forest')">🌲 Forest</button>
+        <button class="sound-btn" id="btnOff" onclick="toggleSound('off')">🔇 Off</button>
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const heart     = document.getElementById('breathingHeart');
+    const ring      = document.getElementById('breathingRing');
+    const ring2     = document.getElementById('breathingRing2');
+    const btn       = document.getElementById('startBreathe');
+    const text      = document.getElementById('instruction-text');
+    const countdown = document.getElementById('countdownText');
+
+    const phases = [
+      { label: 'Inhale...', duration: 4000, seconds: 4, ringClass: 'ring-inhale', ring2Class: 'ring-2-inhale', textClass: 'phase-inhale' },
+      { label: 'Hold...',   duration: 4000, seconds: 4, ringClass: 'ring-hold',   ring2Class: 'ring-2-hold',   textClass: 'phase-hold'   },
+      { label: 'Exhale...', duration: 4000, seconds: 4, ringClass: 'ring-exhale', ring2Class: 'ring-2-exhale', textClass: 'phase-exhale' },
+    ];
+
+    let running = false, phaseIndex = 0, timer = null, countTimer = null;
+
+    function clearRingClasses() {
+      ring.classList.remove('ring-inhale', 'ring-hold', 'ring-exhale');
+      ring2.classList.remove('ring-2-inhale', 'ring-2-hold', 'ring-2-exhale');
+      text.classList.remove('phase-inhale', 'phase-hold', 'phase-exhale');
+    }
+
+    function startCountdown(seconds) {
+      let s = seconds;
+      countdown.textContent = s;
+      clearInterval(countTimer);
+      countTimer = setInterval(() => {
+        s--;
+        if (s <= 0) { clearInterval(countTimer); countdown.textContent = ''; }
+        else countdown.textContent = s;
+      }, 1000);
+    }
+
+    function runPhase() {
+      const phase = phases[phaseIndex];
+      clearRingClasses();
+      setTimeout(() => {
+        ring.classList.add(phase.ringClass);
+        ring2.classList.add(phase.ring2Class);
+      }, 50);
+      text.textContent = phase.label;
+      text.classList.add(phase.textClass);
+      startCountdown(phase.seconds);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        phaseIndex = (phaseIndex + 1) % phases.length;
+        runPhase();
+      }, phase.duration);
+    }
+
+    btn.addEventListener('click', () => {
+      if (!running) {
+        running = true;
+        btn.textContent = '■ Stop';
+        heart.classList.add('heart-active');
+        phaseIndex = 0;
+        runPhase();
+      } else {
+        running = false;
+        btn.textContent = '▶ Begin';
+        heart.classList.remove('heart-active');
+        clearRingClasses();
+        text.textContent = 'Ready when you are';
+        text.className = '';
+        countdown.textContent = '';
+        clearTimeout(timer);
+        clearInterval(countTimer);
+      }
+    });
+
+    // ── Ambient Sound ──
+    let audioCtx = null;
+    let soundNode = null;
+    let currentSound = 'off';
+
+    function getAudioCtx() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      return audioCtx;
+    }
+
+    function stopSound() {
+      if (soundNode) {
+        soundNode.stop();
+        soundNode = null;
+      }
+    }
+
+    function playRain() {
+      const ctx = getAudioCtx();
+      const bufferSize = 4096;
+      const node = ctx.createScriptProcessor(bufferSize, 1, 1);
+      node.onaudioprocess = (e) => {
+        const out = e.outputBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) out[i] = (Math.random() * 2 - 1) * 0.08;
+      };
+      // Low pass filter for soft rain
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 800;
+      node.connect(filter);
+      filter.connect(ctx.destination);
+      node.start = () => {};
+      node.stop = () => { node.disconnect(); filter.disconnect(); };
+      return node;
+    }
+
+    function playWhiteNoise() {
+      const ctx = getAudioCtx();
+      const bufferSize = 4096;
+      const node = ctx.createScriptProcessor(bufferSize, 1, 1);
+      node.onaudioprocess = (e) => {
+        const out = e.outputBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) out[i] = (Math.random() * 2 - 1) * 0.12;
+      };
+      node.connect(ctx.destination);
+      node.start = () => {};
+      node.stop = () => { node.disconnect(); };
+      return node;
+    }
+
+    function playForest() {
+      const ctx = getAudioCtx();
+      const bufferSize = 4096;
+      const node = ctx.createScriptProcessor(bufferSize, 1, 1);
+      // Forest = filtered brown noise (deeper, warmer)
+      let lastOut = 0;
+      node.onaudioprocess = (e) => {
+        const out = e.outputBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          const white = Math.random() * 2 - 1;
+          lastOut = (lastOut + 0.02 * white) / 1.02;
+          out[i] = lastOut * 3.5 * 0.15;
+        }
+      };
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 400;
+      filter.Q.value = 0.5;
+      node.connect(filter);
+      filter.connect(ctx.destination);
+      node.start = () => {};
+      node.stop = () => { node.disconnect(); filter.disconnect(); };
+      return node;
+    }
+
+    function toggleSound(type) {
+      // Update button styles
+      document.querySelectorAll('.sound-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1))?.classList.add('active');
+
+      stopSound();
+      currentSound = type;
+
+      if (type === 'rain')  soundNode = playRain();
+      if (type === 'white') soundNode = playWhiteNoise();
+      if (type === 'forest') soundNode = playForest();
+    }
+  </script>
+
+  <script src="script.js"></script>
+  <script>
+    function makeBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.random() * 60 + 15;
+      const duration = Math.random() * 12 + 8;
+      const colorDur = Math.random() * 8 + 6;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.bottom = '-' + size + 'px';
+      b.style.animationDuration = duration + 's, ' + colorDur + 's';
+      b.style.animationDelay = (Math.random() * 3) + 's, 0s';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), (duration + 4) * 1000);
+    }
+    for (let i = 0; i < 15; i++) setTimeout(makeBubble, i * 400);
+    setInterval(makeBubble, 1200);
+  </script>
+</body>
+</html>

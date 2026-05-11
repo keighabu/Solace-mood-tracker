@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solace | Journal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bottomnav.css">
+</head>
+<body class="journal-body">
+
+  <div class="progress-page-container">
+    <div class="glass-card journal-card">
+
+      <a href="dashboard.html" class="back-link-journal">
+        <span class="back-arrow">←</span> Dashboard
+      </a>
+
+      <header class="journal-header">
+        <h1>Write your <i>thoughts</i> 🤍</h1>
+        <p class="description">Let it all out — your words are safe here.</p>
+      </header>
+
+      <div class="reflection-box">
+        <label>Today I feel...</label>
+        <textarea id="journal-input" placeholder="Today I feel..."></textarea>
+      </div>
+
+      <button class="save-btn" id="saveJournal">💾 Save Entry</button>
+
+    </div>
+  </div>
+
+  <!-- Journal Entries -->
+  <div class="recent-entries-section">
+    <h3>Recent Journal Entries</h3>
+    <div id="entriesList"></div>
+  </div>
+
+  <!-- Mood Entries -->
+  <div class="recent-entries-section" style="margin-top: 30px;">
+    <h3>Mood History</h3>
+    <div id="moodEntriesList"></div>
+  </div>
+
+  <script>
+    const moodEmojis = {
+      Joyful: '🤩', Calm: '😌', Okay: '🙂',
+      Meh: '😐', Sad: '😢', Angry: '😡', Anxious: '😰'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const journalInput = document.getElementById('journal-input');
+      const saveBtn = document.getElementById('saveJournal');
+      let editingIndex = null;
+
+      // Render journal entries
+      function renderEntries() {
+        const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        const list = document.getElementById('entriesList');
+
+        if (entries.length === 0) {
+          list.innerHTML = '<p style="color:#aaa;text-align:center;font-style:italic;padding:20px 0;">No entries yet. Write your first one above ✨</p>';
+          return;
+        }
+
+        list.innerHTML = entries.map((entry, index) => `
+          <div class="entry-card">
+            <div class="entry-header">
+              <span class="entry-date">${new Date(entry.date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
+              <div class="entry-actions">
+                <button class="action-btn" onclick="editEntry(${index})" title="Edit">✏️</button>
+                <button class="action-btn" onclick="deleteEntry(${index})" title="Delete">🗑️</button>
+              </div>
+            </div>
+            <p class="entry-text">${entry.content.replace(/\n/g, '<br>')}</p>
+          </div>
+        `).join('');
+      }
+
+      // Render mood entries
+      function renderMoodEntries() {
+        const moods = JSON.parse(localStorage.getItem('moodHistory')) || [];
+        const list = document.getElementById('moodEntriesList');
+
+        if (moods.length === 0) {
+          list.innerHTML = '<p style="color:#aaa;text-align:center;font-style:italic;padding:20px 0;">No mood entries yet. Log your first mood ✨</p>';
+          return;
+        }
+
+        list.innerHTML = [...moods].reverse().map((entry, index) => `
+          <div class="entry-card">
+            <div class="entry-header">
+              <span class="entry-date">📅 ${new Date(entry.date).toLocaleDateString([], { dateStyle: 'medium' })} &nbsp;·&nbsp; ${entry.time}</span>
+              <button class="action-btn" onclick="deleteMoodEntry(${moods.length - 1 - index})" title="Delete">🗑️</button>
+            </div>
+            <p class="entry-text" style="font-size:1.3rem; margin-bottom:6px;">
+              ${moodEmojis[entry.mood] || '😶'} <strong>${entry.mood}</strong>
+            </p>
+            ${entry.tags && entry.tags.length > 0 ? `
+              <p class="entry-text" style="margin-bottom:6px;">
+                🏷️ ${entry.tags.join(', ')}
+              </p>` : ''}
+            ${entry.note ? `
+              <p class="entry-text" style="color:#888;">
+                💬 ${entry.note}
+              </p>` : ''}
+          </div>
+        `).join('');
+      }
+
+      window.deleteEntry = (index) => {
+        if (confirm("Delete this entry?")) {
+          let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+          entries.splice(index, 1);
+          localStorage.setItem('journalEntries', JSON.stringify(entries));
+          renderEntries();
+        }
+      };
+
+      window.deleteMoodEntry = (index) => {
+        if (confirm("Delete this mood entry?")) {
+          let moods = JSON.parse(localStorage.getItem('moodHistory')) || [];
+          moods.splice(index, 1);
+          localStorage.setItem('moodHistory', JSON.stringify(moods));
+          renderMoodEntries();
+        }
+      };
+
+      window.editEntry = (index) => {
+        let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+        journalInput.value = entries[index].content;
+        editingIndex = index;
+        saveBtn.innerHTML = '📝 Update Entry';
+        journalInput.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      saveBtn.addEventListener('click', () => {
+        const content = journalInput.value.trim();
+        if (!content) return;
+
+        let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+
+        if (editingIndex !== null) {
+          entries[editingIndex].content = content;
+          editingIndex = null;
+          saveBtn.innerHTML = '💾 Save Entry';
+        } else {
+          entries.unshift({ date: new Date().toISOString(), content });
+        }
+
+        localStorage.setItem('journalEntries', JSON.stringify(entries));
+        journalInput.value = '';
+        renderEntries();
+      });
+
+      renderEntries();
+      renderMoodEntries();
+    });
+  </script>
+
+  <script src="script.js"></script>
+  <script>
+    function makeBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.random() * 60 + 15;
+      const duration = Math.random() * 12 + 8;
+      const colorDur = Math.random() * 8 + 6;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.bottom = '-' + size + 'px';
+      b.style.animationDuration = duration + 's, ' + colorDur + 's';
+      b.style.animationDelay = (Math.random() * 3) + 's, 0s';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), (duration + 4) * 1000);
+    }
+    for (let i = 0; i < 15; i++) setTimeout(makeBubble, i * 400);
+    setInterval(makeBubble, 1200);
+  </script>
+</body>
+</html>

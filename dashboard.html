@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solace | Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bottomnav.css">
+</head>
+<body class="dashboard-body">
+
+  <img src="logo.png" alt="Solace Logo" class="logo logo-dashboard">
+  <p id="dashboard-date" class="date-text"></p>
+  <h2 id="welcome-msg" class="greeting-text"></h2>
+  <p class="description">How are you feeling today? Take a deep breath. You are in a safe space.</p>
+
+  <a href="index.html" class="back-link">← Exit</a>
+
+  <div class="glass-card">
+
+    <!-- Affirmation -->
+    <div class="affirmation-container">
+      <span class="affirmation-label">Daily Affirmation</span>
+      <div class="affirmation-row">
+        <p id="affirmation-quote">"Your potential is endless."</p>
+        <span>🌸</span>
+        <button class="refresh-icon-btn" onclick="refreshAffirmation()" title="New affirmation">↻</button>
+      </div>
+    </div>
+
+    <br>
+
+    <!-- Quick check-in -->
+    <div class="check-in-section">
+      <div class="check-in-header">
+        <div class="check-in-titles">
+          <h3>A quick check-in</h3>
+          <p>Tap one. We'll remember.</p>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <a href="mood-screen.html" class="stat-card">
+          <div class="card-icon icon-yellow">😊</div>
+          <div class="card-content">
+            <h3>Log Mood</h3>
+            <p>How do you feel?</p>
+          </div>
+          
+        </a>
+
+        <a href="journal.html" class="stat-card">
+          <div class="card-icon icon-green">📖</div>
+          <div class="card-content">
+            <h3>Write Journal</h3>
+            <p>Pour it out</p>
+          </div>
+        
+        </a>
+
+        <a href="progress.html" class="stat-card">
+          <div class="card-icon icon-grey">📈</div>
+          <div class="card-content">
+            <h3>View Progress</h3>
+            <p>Your mood trends</p>
+          </div>
+         
+        </a>
+
+        <a href="breathe.html" class="stat-card">
+          <div class="card-icon icon-white">🌬️</div>
+          <div class="card-content">
+            <h3>Breathe</h3>
+            <p>A calm moment</p>
+          </div>
+         
+        </a>
+      </div>
+
+      <!-- Footer -->
+      <div class="dashboard-footer">
+  <p id="entryCounter">0 mood entries logged</p>
+  <br>
+  <button id="resetBtn" class="reset-link">Reset</button>
+</div>
+    </div>
+
+  </div>
+
+
+
+  <script>
+    // Dashboard init
+    (function() {
+      const dateEl = document.getElementById('dashboard-date');
+      const welcomeEl = document.getElementById('welcome-msg');
+      const now = new Date();
+      const hour = now.getHours();
+
+      dateEl.innerText = now.toLocaleDateString('en-PH', {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+
+      let greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+      const name = localStorage.getItem('user_name');
+      welcomeEl.innerText = name ? `${greeting}, ${name}! 🤍` : `${greeting}! 🤍`;
+
+      // Entry counter
+      const count = localStorage.getItem('moodCount') || 0;
+      const counterEl = document.getElementById('entryCounter');
+      if (counterEl) counterEl.innerText = `${count} mood entries logged`;
+
+      // Reset button
+      document.getElementById('resetBtn').addEventListener('click', () => {
+        if (confirm('Reset all mood entries?')) {
+          localStorage.setItem('moodCount', 0);
+          localStorage.removeItem('moodHistory');
+          location.reload();
+        }
+      });
+    })();
+
+    // Affirmations
+    const affirmations = [
+      "Your potential is endless.",
+      "You are enough, just as you are.",
+      "Every day is a fresh start.",
+      "You are worthy of love and kindness.",
+      "Small steps still move you forward.",
+      "You are braver than you believe.",
+      "It's okay to take things one day at a time.",
+      "Breathe. You are in a safe space.",
+      "Progress, not perfection.",
+      "Your feelings are valid."
+    ];
+
+    function refreshAffirmation() {
+      const el = document.getElementById('affirmation-quote');
+      const current = el.innerText.replace(/"/g, '');
+      const pool = affirmations.filter(a => a !== current);
+      const next = pool[Math.floor(Math.random() * pool.length)];
+      el.innerText = `"${next}"`;
+    }
+  </script>
+
+  <script src="script.js"></script>
+   <script>
+    function makeBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.random() * 60 + 15;
+      const duration = Math.random() * 12 + 8;
+      const colorDur = Math.random() * 8 + 6;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.bottom = '-' + size + 'px';
+      b.style.animationDuration = duration + 's, ' + colorDur + 's';
+      b.style.animationDelay = (Math.random() * 3) + 's, 0s';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), (duration + 4) * 1000);
+    }
+    for (let i = 0; i < 15; i++) setTimeout(makeBubble, i * 400);
+    setInterval(makeBubble, 1200);
+  </script>
+</body>
+</html>

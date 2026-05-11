@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Solace | Log Mood</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="bottomnav.css">
+</head>
+<body class="mood-screen-body">
+
+  <div class="page-wrapper">
+    <a href="dashboard.html" class="back-link">← Dashboard</a>
+  </div>
+
+  <div class="glass-card">
+    <h2 class="mood-title">Choose your <i>mood</i> today</h2>
+    <p class="mood-subtitle">There are no wrong answers — just notice what's here.</p>
+
+    <div class="mood-options">
+      <button class="mood-btn" type="button" data-mood="Joyful" title="Joyful">🤩</button>
+      <button class="mood-btn" type="button" data-mood="Calm" title="Calm">😌</button>
+      <button class="mood-btn" type="button" data-mood="Okay" title="Okay">🙂</button>
+      <button class="mood-btn" type="button" data-mood="Meh" title="Meh">😐</button>
+      <button class="mood-btn" type="button" data-mood="Sad" title="Sad">😢</button>
+      <button class="mood-btn" type="button" data-mood="Angry" title="Angry">😡</button>
+      <button class="mood-btn" type="button" data-mood="Anxious" title="Anxious">😰</button>
+    </div>
+
+    <div class="mood-tags-section">
+      <label>What made you feel this way?</label>
+      <div class="mood-tags">
+        <button class="mood-tag-chip" type="button">Work</button>
+        <button class="mood-tag-chip" type="button">Family</button>
+        <button class="mood-tag-chip" type="button">Health</button>
+        <button class="mood-tag-chip" type="button">Friends</button>
+        <button class="mood-tag-chip" type="button">Sleep</button>
+        <button class="mood-tag-chip" type="button">Exercise</button>
+        <button class="mood-tag-chip" type="button">Food</button>
+        <button class="mood-tag-chip" type="button">Nature</button>
+        <button class="mood-tag-chip" type="button">School</button>
+        <button class="mood-tag-chip" type="button">Love</button>
+      </div>
+    </div>
+
+  
+    <button class="save-btn" id="saveMoodBtn">Save Mood</button>
+  </div>
+
+  <script>
+    let selectedMood = "";
+    let selectedTags = [];
+
+    // Mood button bounce selection
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected', 'bounce'));
+        this.classList.add('selected');
+        void this.offsetWidth;
+        this.classList.add('bounce');
+        this.addEventListener('animationend', () => this.classList.remove('bounce'), { once: true });
+        selectedMood = this.getAttribute('data-mood');
+      });
+    });
+
+    // Tag chip multi-select
+    document.querySelectorAll('.mood-tag-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        this.classList.toggle('selected');
+        const tag = this.textContent.trim();
+        if (this.classList.contains('selected')) {
+          selectedTags.push(tag);
+        } else {
+          selectedTags = selectedTags.filter(t => t !== tag);
+        }
+      });
+    });
+
+   // Save mood
+document.getElementById('saveMoodBtn').addEventListener('click', () => {
+  if (!selectedMood) {
+    alert("Please select a mood first!");
+    return;
+  }
+
+  // 🎉 Confetti burst!
+  confetti({
+    particleCount: 150,
+    spread: 100,
+    origin: { y: 0.6 },
+    colors: ['#FF6B6B', '#FF9F43', '#FFEAA7', '#55EFC4', '#74B9FF', '#A29BFE', '#FD79A8', '#00CEC9', '#FDCB6E', '#E17055']
+  });
+
+  // Second burst from the left
+  setTimeout(() => {
+    confetti({
+      particleCount: 80,
+      angle: 60,
+      spread: 70,
+      origin: { x: 0, y: 0.6 },
+      colors: ['#FF6B6B', '#FF9F43', '#FFEAA7', '#55EFC4', '#74B9FF', '#A29BFE', '#FD79A8']
+    });
+  }, 200);
+
+  // Third burst from the right
+  setTimeout(() => {
+    confetti({
+      particleCount: 80,
+      angle: 120,
+      spread: 70,
+      origin: { x: 1, y: 0.6 },
+      colors: ['#FFEAA7', '#55EFC4', '#74B9FF', '#A29BFE', '#FD79A8', '#00CEC9', '#FDCB6E']
+    });
+  }, 400);
+
+  // Save after delay so confetti is visible
+  setTimeout(() => {
+    let moodHistory = JSON.parse(localStorage.getItem('moodHistory')) || [];
+    moodHistory.push({
+      mood: selectedMood,
+      tags: selectedTags,
+      note: '',
+      date: new Date().toISOString(),
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    });
+    localStorage.setItem('moodHistory', JSON.stringify(moodHistory));
+    let count = parseInt(localStorage.getItem('moodCount')) || 0;
+    localStorage.setItem('moodCount', count + 1);
+    window.location.href = 'dashboard.html';
+  }, 1500);
+});
+  </script>
+
+  <script src="script.js"></script>
+  <script>
+    function makeBubble() {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = Math.random() * 60 + 15;
+      const duration = Math.random() * 12 + 8;
+      const colorDur = Math.random() * 8 + 6;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.bottom = '-' + size + 'px';
+      b.style.animationDuration = duration + 's, ' + colorDur + 's';
+      b.style.animationDelay = (Math.random() * 3) + 's, 0s';
+      document.body.appendChild(b);
+      setTimeout(() => b.remove(), (duration + 4) * 1000);
+    }
+    for (let i = 0; i < 15; i++) setTimeout(makeBubble, i * 400);
+    setInterval(makeBubble, 1200);
+  </script>
+</body>
+</html>
